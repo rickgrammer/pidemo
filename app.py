@@ -36,30 +36,47 @@ sections = [
 def index():
     return jsonify({'message': 'GET /books\nGET /books/<book-id>'})
 
-@app.route('/books')
+@app.route('/books/')
 def books():
-    c = db['books']
-    return jsonify(c.find())
+    books = db['books']
+    return jsonify(list(books.find({}, {'_id': 0})))
 
-@app.route('/books/<int:book_id>')
+@app.route('/books/<int:book_id>/')
 def book(book_id):
-    return jsonify({})
+    books = db['books']
+    return jsonify(books.find_one({'book_id': book_id}, {'_id': 0}))
 
-@app.route('/books/<int:book_id>/chapters')
+@app.route('/books/<int:book_id>/chapters/')
 def chapters(book_id):
-    return jsonify({})
+    chapters = db['chapters']
+    return jsonify(list(chapters.find({
+        'book_id': book_id,
+    }, {'_id': 0})))
 
-@app.route('/books/<int:book_id>/chapters/<int:chapter_id>')
+@app.route('/books/<int:book_id>/chapters/<int:chapter_id>/')
 def chapter(book_id, chapter_id):
-    return jsonify({})
+    chapters = db['chapters']
+    return jsonify(chapters.find_one({
+        'book_id': book_id,
+        'chapter_id': chapter_id
+    }, {'_id': 0}))
 
-@app.route('/books/<int:book_id>/chapters/<int:chapter_id>/sections')
+@app.route('/books/<int:book_id>/chapters/<int:chapter_id>/sections/')
 def sections(book_id, chapter_id):
-    return jsonify({})
+    sections = db['sections']
+    return jsonify(list(sections.find({
+        'book_id': book_id,
+        'chapter_id': chapter_id,
+    }, {'_id': 0})))
 
-@app.route('/books/<int:book_id>/chapters/<int:chapter_id>/sections/<int:section_id>')
+@app.route('/books/<int:book_id>/chapters/<int:chapter_id>/sections/<int:section_id>/')
 def section(book_id, chapter_id, section_id):
-    return jsonify({})
+    sections = db['sections']
+    return jsonify(sections.find_one({
+        'book_id': book_id,
+        'chapter_id': chapter_id,
+        'section_id': section_id,
+    }, {'_id': 0}))
 
 
 
