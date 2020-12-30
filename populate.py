@@ -41,6 +41,7 @@ def add_books(n=10):
         
             for k in range(1, sections):
                 section = {
+                    'book_id': i,
                     'chapter_id': j,
                     'section_id': k,
                     'section_name': 'SECTION: ' + faker.word() + ' ' + faker.word(),
