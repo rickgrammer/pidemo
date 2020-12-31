@@ -20,10 +20,11 @@ def add_books(n=10):
 
     for i in range(1, n+1):
         chapters = random.randint(6,30)
+        book_title = faker.word() + ' ' + faker.word()
 
         book = {
             'book_id': i,
-            'book_title': faker.word() + ' ' + faker.word(),
+            'book_title': book_title,
             'board': random.choice(boards),
             'chapter_ids': list(range(1, chapters+1))
         }
@@ -31,10 +32,13 @@ def add_books(n=10):
 
         for j in range(1, chapters+1):
             sections = random.randint(5,10)
+            chapter_name = 'CHAPTER: ' + faker.word() + ' ' + faker.word()
+
             chapter = {
                 'book_id': i,
+                'book_title': book_title,
                 'chapter_id': j,
-                'chapter_name': 'CHAPTER: ' + faker.word() + ' ' + faker.word(),
+                'chapter_name': chapter_name,
                 'section_ids': list(range(1, sections+1))
             }
             c_chapters.insert_one(chapter)
@@ -42,7 +46,9 @@ def add_books(n=10):
             for k in range(1, sections):
                 section = {
                     'book_id': i,
+                    'book_title':book_title,
                     'chapter_id': j,
+                    'chapter_name': chapter_name,
                     'section_id': k,
                     'section_name': 'SECTION: ' + faker.word() + ' ' + faker.word(),
                     'section_text': '\n'.join(faker.text() for i in range(30))

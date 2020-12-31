@@ -1,9 +1,13 @@
+import re
 import pymongo
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 client = pymongo.MongoClient("mongodb+srv://test:test@cluster0.smqmf.mongodb.net/test?retryWrites=true&w=majority")
 db = client.test
+
+#create index
+db.sections.create_index([('section_text', pymongo.TEXT)])
 
 @app.route('/')
 def index():
@@ -52,5 +56,16 @@ def section(book_id, chapter_id, section_id):
     }, {'_id': 0}))
 
 
-
-
+@app.route('/search/<search_text>/')
+def search(search_text):
+    sections = db['sections']
+    print(search_text)
+    query = {
+        '$text': {
+            '$search': f'"{search_text}"',
+        }
+    }
+    projection = {
+        '_id': 0,
+    }
+    return jsonify(list(sections.find(query, projection)))
